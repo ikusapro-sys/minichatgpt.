@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini ChatGPT 3</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:linear-gradient(135deg,#111827,#312e81);
+  color:white;
+  min-height:100vh;
+}
+
+header{
+  padding:20px;
+  text-align:center;
+  background:rgba(0,0,0,.35);
+}
+
+header h1{
+  margin:0;
+  font-size:32px;
+}
+
+header p{
+  margin:6px 0 0;
+  opacity:.8;
+}
+
+nav{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:8px;
+  padding:12px;
+  background:rgba(0,0,0,.25);
+}
+
+nav button,.btn{
+  border:0;
+  border-radius:10px;
+  padding:10px 14px;
+  background:#6366f1;
+  color:white;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+nav button:hover,.btn:hover{
+  filter:brightness(1.15);
+}
+
+.page{
+  display:none;
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+
+.page.active{
+  display:block;
+}
+
+.card{
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.chat{
+  height:430px;
+  overflow-y:auto;
+  background:rgba(0,0,0,.25);
+  border-radius:15px;
+  padding:15px;
+}
+
+.msg{
+  padding:12px 15px;
+  border-radius:14px;
+  margin:10px 0;
+  max-width:80%;
+  white-space:pre-wrap;
+}
+
+.msg.user{
+  margin-left:auto;
+  background:#4f46e5;
+}
+
+.msg.bot{
+  margin-right:auto;
+  background:#16a34a;
+  cursor:text;
+}
+
+.chatbar{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.chatbar input{
+  flex:1;
+  padding:14px;
+  border-radius:12px;
+  border:0;
+  font-size:16px;
+}
+
+.stats{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.stat{
+  flex:1;
+  min-width:130px;
+  background:rgba(0,0,0,.25);
+  padding:15px;
+  border-radius:14px;
+  text-align:center;
+}
+
+.big{
+  font-size:30px;
+  font-weight:bold;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:12px;
+}
+
+.item{
+  padding:18px;
+  background:rgba(0,0,0,.25);
+  border-radius:15px;
+  text-align:center;
+}
+
+.boss{
+  border:2px solid #ef4444;
+}
+
+.health{
+  height:20px;
+  background:#222;
+  border-radius:20px;
+  overflow:hidden;
+  margin:10px 0;
+}
+
+.health div{
+  height:100%;
+  background:#ef4444;
+  width:100%;
+  transition:.3s;
+}
+
+.badge{
+  padding:15px;
+  border-radius:14px;
+  background:#333;
+  opacity:.5;
+}
+
+.badge.found{
+  opacity:1;
+  background:#15803d;
+}
+
+textarea{
+  width:100%;
+  min-height:120px;
+  border-radius:12px;
+  padding:12px;
+}
+
+select{
+  padding:10px;
+  border-radius:10px;
+}
+
+footer{
+  text-align:center;
+  padding:30px;
+  opacity:.7;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>🤖 Mini ChatGPT 3</h1>
+  <p>🐔 Chicken Butt Racing: Chaos Edition</p>
+  <p>Created by Ihsan Valizada</p>
+</header>
+
+<nav>
+  <button onclick="showPage('chat')">💬 Chat</button>
+  <button onclick="showPage('roulette')">🎰 Roulette</button>
+  <button onclick="showPage('rps')">✊ RPS</button>
+  <button onclick="showPage('race')">🏁 Race</button>
+  <button onclick="showPage('skins')">🎨 Skins</button>
+  <button onclick="showPage('background')">🌈 Background</button>
+  <button onclick="showPage('secrets')">🔐 Secrets</button>
+</nav>
+
+<section id="chat" class="page active">
+
+  <div class="card">
+    <h2>💬 Mini ChatGPT</h2>
+
+    <div id="chat" class="chat">
+      <div class="msg bot">
+        Hello! 👋 I am Mini ChatGPT 3!
+        Ask me anything... or discover my secrets. 👀
+      </div>
+    </div>
+
+    <div class="chatbar">
+      <input id="chatInput" placeholder="Talk to Mini ChatGPT...">
+      <button class="btn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+</section>
+
+<section id="roulette" class="page">
+
+  <div class="card">
+    <h2>🎰 Chicken Butt Roulette</h2>
+
+    <div class="grid">
+      <div class="item">🐔 Classic<br>Speed: 5</div>
+      <div class="item">🥇 Gold<br>Speed: 7</div>
+      <div class="item">🔥 Fire<br>Speed: 9</div>
+      <div class="item">❄️ Ice<br>Speed: 8</div>
+      <div class="item">🤖 Robot<br>Speed: 10</div>
+      <div class="item">👽 Alien<br>Speed: 11</div>
+      <div class="item">👻 Ghost<br>Speed: 12</div>
+      <div class="item">👑 Godly<br>Speed: 15</div>
+    </div>
+
+    <br>
+
+    <button class="btn" onclick="spinRoulette()">🎰 SPIN!</button>
+
+    <h2 id="rouletteResult">?</h2>
+  </div>
+
+</section>
+
+<section id="rps" class="page">
+
+  <div class="card">
+    <h2>✊ Rock Paper Scissors</h2>
+
+    <button class="btn" onclick="playRPS('rock')">🪨 Rock</button>
+    <button class="btn" onclick="playRPS('paper')">📄 Paper</button>
+    <button class="btn" onclick="playRPS('scissors')">✂️ Scissors</button>
+
+    <h2 id="rpsResult">Choose!</h2>
+
+    <p>Points: <b id="pointsRPS">0</b></p>
+  </div>
+
+</section>
+
+<section id="race" class="page">
+
+  <div class="card">
+    <h2>🏁 Chicken Butt Racing</h2>
+
+    <p>
+      Player 1: <b>WASD</b> to move • <b>D</b> to boost
+    </p>
+
+    <div class="stats">
+      <div class="stat">
+        Speed
+        <div class="big" id="raceSpeed">5</div>
+      </div>
+
+      <div class="stat">
+        Boost
+        <div class="big" id="raceBoost">3</div>
+      </div>
+
+      <div class="stat">
+        Position
+        <div class="big" id="racePosition">0</div>
+      </div>
+    </div>
+
+    <br>
+
+    <button class="btn" onclick="startRace()">🏁 START RACE</button>
+
+    <div id="raceMessage">
+      Ready?
+    </div>
+  </div>
+
+</section>
+
+<section id="skins" class="page">
+
+  <div class="card">
+    <h2>🎨 Chicken Butt Skins</h2>
+
+    <div class="grid">
+
+      <button class="item btn" onclick="selectSkin('Classic')">
+        🐔 Classic
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Gold')">
+        🥇 Gold
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Fire')">
+        🔥 Fire
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Ice')">
+        ❄️ Ice
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Robot')">
+        🤖 Robot
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Alien')">
+        👽 Alien
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Ghost')">
+        👻 Ghost
+      </button>
+
+      <button class="item btn" onclick="selectSkin('Godly')">
+        👑 Godly
+      </button>
+
+    </div>
+
+    <h3 id="selectedSkin">Selected: Classic</h3>
+  </div>
+
+</section>
+
+<section id="background" class="page">
+
+  <div class="card">
+
+    <h2>🌈 Background</h2>
+
+    <button class="btn" onclick="theme('day')">☀️ Day</button>
+    <button class="btn" onclick="theme('night')">🌙 Night</button>
+    <button class="btn" onclick="theme('sunset')">🌅 Sunset</button>
+    <button class="btn" onclick="theme('space')">🚀 Space</button>
+    <button class="btn" onclick="theme('glitch')">⚡ Glitch</button>
+    <button class="btn" onclick="theme('rainbow')">🌈 Rainbow</button>
+
+  </div>
+
+</section>
+
+<section id="secrets" class="page">
+
+  <div class="card">
+
+    <h2>🔐 Secrets</h2>
+
+    <div class="grid">
+
+      <div id="badgeGlitch" class="badge">
+        ⚡ Glitch World
+      </div>
+
+      <div id="badgeCopy" class="badge">
+        📋 Copy Mini ChatGPT
+      </div>
+
+      <div id="badgeWin" class="badge">
+        🏆 Win the Race
+      </div>
+
+      <div id="badgeBoss" class="badge">
+        👹 Defeat the Boss
+      </div>
+
+    </div>
+
+    <h2 id="allSecrets"></h2>
+
+  </div>
+
+  <div id="bossPanel" class="card boss" style="display:none">
+
+    <h2>👹 ULTIMATE BOSS</h2>
+
+    <h3 id="bossName">THE CHICKEN DESTROYER</h3>
+
+    <p>Boss HP: <b id="bossHPText">200</b></p>
+
+    <div class="health">
+      <div id="bossHealth"></div>
+    </div>
+
+    <p>Your HP: <b id="playerHPText">100</b></p>
+
+    <div class="health">
+      <div id="playerHealth"></div>
+    </div>
+
+    <button class="btn" onclick="attackBoss()">⚔️ ATTACK</button>
+    <button class="btn" onclick="defendBoss()">🛡️ DEFEND</button>
+
+    <p id="bossMessage">
+      The boss has awakened...
+    </p>
+
+  </div>
+
+</section>
+
+<footer>
+  🐔 Mini ChatGPT 3 • Created by Ihsan Valizada
+</footer>
+
+<script>
+
+let points = Number(localStorage.getItem("points")) || 0;
+
+let selectedSkin =
+  localStorage.getItem("selectedSkin") || "Classic";
+
+let secrets = JSON.parse(
+  localStorage.getItem("secrets") ||
+  '{"glitch":false,"copy":false,"win":false,"boss":false}'
+);
+
+let bossHP = 200;
+let playerHP = 100;
+let bossActive = false;
+let defending = false;
+let copyAlreadyTriggered = false;
+
+function save(){
+
+  localStorage.setItem("points",points);
+
+  localStorage.setItem(
+    "selectedSkin",
+    selectedSkin
+  );
+
+  localStorage.setItem(
+    "secrets",
+    JSON.stringify(secrets)
+  );
+}
+
+function showPage(id){
+
+  document
+    .querySelectorAll(".page")
+    .forEach(p=>p.classList.remove("active"));
+
+  document
+    .getElementById(id)
+    .classList.add("active");
+}
+
+function sound(type){
+
+  try{
+
+    const ctx =
+      new (window.AudioContext ||
+      window.webkitAudioContext)();
+
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+
+    const sounds={
+      click:440,
+      secret:880,
+      win:660,
+      boss:120,
+      attack:300
+    };
+
+    osc.frequency.value=sounds[type]||440;
+
+    osc.start();
+
+    gain.gain.setValueAtTime(.15,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(
+      .001,
+      ctx.currentTime+.25
+    );
+
+    osc.stop(ctx.currentTime+.25);
+
+  }catch(e){}
+
+}
+
+/* =========================
+   CHAT
+========================= */
+
+const normalReplies=[
+
+  "Interesting! 🤔",
+
+  "That's a good question! 😎",
+
+  "Hmm... let me think about that. 🧠",
+
+  "Absolutely! 🔥",
+
+  "I have an answer... probably. 😂",
+
+  "Chicken Butt approves. 🐔🍑",
+
+  "That's actually pretty cool! 👀",
+
+  "Mini ChatGPT 3 is thinking... 🤖"
+
+];
+
+function sendMessage(){
+
+  const input=
+    document.getElementById("chatInput");
+
+  const text=input.value.trim();
+
+  if(!text)return;
+
+  addMessage(text,"user");
+
+  input.value="";
+
+  const lower=text.toLowerCase();
+
+  /* CREATOR QUESTIONS */
+
+  if(
+    lower.includes("who created this game") ||
+    lower.includes("who made this game") ||
+    lower.includes("who created the game") ||
+    lower.includes("who is the creator") ||
+    lower.includes("who made mini chatgpt") ||
+    lower.includes("who created mini chatgpt") ||
+    lower.includes("who created mini-chatgpt")
+  ){
+
+    addMessage(
+      "🐔🤖 This game was created by Ihsan Valizada! 🔥🏆",
+      "bot"
+    );
+
+    return;
+  }
+
+  /* GLITCH WORLD SECRET */
+
+  if(lower.includes("glitch world")){
+
+    secrets.glitch=true;
+
+    addMessage(
+      "⚡ GLITCH WORLD DETECTED! ⚡",
+      "bot"
+    );
+
+    sound("secret");
+
+    checkSecrets();
+    save();
+
+    return;
+  }
+
+  /* NORMAL CHAT */
+
+  const reply=
+    normalReplies[
+      Math.floor(Math.random()*normalReplies.length)
+    ];
+
+  addMessage(reply,"bot");
+
+}
+
+function addMessage(text,type){
+
+  const chat=
+    document.getElementById("chat");
+
+  const div=
+    document.createElement("div");
+
+  div.className="msg "+type;
+
+  div.textContent=text;
+
+  chat.appendChild(div);
+
+  chat.scrollTop=chat.scrollHeight;
+
+}
+
+/* =========================
+   COPY SECRET
+========================= */
+
+document.addEventListener("copy",()=>{
+
+  if(copyAlreadyTriggered)return;
+
+  const selection=
+    window.getSelection();
+
+  if(!selection ||
+     selection.rangeCount===0)return;
+
+  const node=selection.anchorNode;
+
+  if(!node)return;
+
+  const element=
+    node.nodeType===Node.TEXT_NODE
+    ?node.parentElement
+    :node;
+
+  if(!element)return;
+
+  const bot=
+    element.closest(".msg.bot");
+
+  if(!bot)return;
+
+  copyAlreadyTriggered=true;
+
+  secrets.copy=true;
+
+  sound("secret");
+
+  addMessage(
+    "📋 SECRET FOUND! You copied my response... 👀",
+    "bot"
+  );
+
+  checkSecrets();
+  save();
+
+  setTimeout(()=>{
+
+    addMessage(
+      "👹 WAIT... SOMETHING WOKE UP!",
+      "bot"
+    );
+
+    awakenBoss();
+
+  },800);
+
+});
+
+/* =========================
+   SECRETS
+========================= */
+
+function checkSecrets(){
+
+  document
+    .getElementById("badgeGlitch")
+    .classList.toggle(
+      "found",
+      secrets.glitch
+    );
+
+  document
+    .getElementById("badgeCopy")
+    .classList.toggle(
+      "found",
+      secrets.copy
+    );
+
+  document
+    .getElementById("badgeWin")
+    .classList.toggle(
+      "found",
+      secrets.win
+    );
+
+  document
+    .getElementById("badgeBoss")
+    .classList.toggle(
+      "found",
+      secrets.boss
+    );
+
+  const all=
+    secrets.glitch &&
+    secrets.copy &&
+    secrets.win &&
+    secrets.boss;
+
+  document.getElementById("allSecrets").textContent=
+    all
+    ?"🏆 FOUND ALL SECRETS! 🏆"
+    :"";
+
+}
+
+/* =========================
+   BOSS
+========================= */
+
+function awakenBoss(){
+
+  if(bossActive)return;
+
+  bossActive=true;
+
+  bossHP=200;
+  playerHP=100;
+
+  document
+    .getElementById("bossPanel")
+    .style.display="block";
+
+  updateBoss();
+
+  sound("boss");
+
+}
+
+function updateBoss(){
+
+  document
+    .getElementById("bossHPText")
+    .textContent=Math.max(0,bossHP);
+
+  document
+    .getElementById("playerHPText")
+    .textContent=Math.max(0,playerHP);
+
+  document
+    .getElementById("bossHealth")
+    .style.width=
+      Math.max(0,bossHP/200*100)+"%";
+
+  document
+    .getElementById("playerHealth")
+    .style.width=
+      Math.max(0,playerHP)+"%";
+
+}
+
+function attackBoss(){
+
+  if(!bossActive)return;
+
+  let damage=
+    selectedSkin==="Godly"
+    ?40
+    :25;
+
+  bossHP-=damage;
+
+  sound("attack");
+
+  document
+    .getElementById("bossMessage")
+    .textContent=
+      "💥 You dealt "+damage+" damage!";
+
+  if(bossHP<=0){
+
+    bossHP=0;
+    bossActive=false;
+
+    secrets.boss=true;
+
+    points+=300;
+
+    sound("win");
+
+    document
+      .getElementById("bossMessage")
+      .textContent=
+        "🏆 BOSS DEFEATED! THE CHICKEN BUTTS CELEBRATE! 🐔🎉";
+
+    checkSecrets();
+    save();
+
+    updateBoss();
+
+    return;
+  }
+
+  updateBoss();
+
+  setTimeout(bossAttack,500);
+
+}
+
+function defendBoss(){
+
+  if(!bossActive)return;
+
+  defending=true;
+
+  document
+    .getElementById("bossMessage")
+    .textContent=
+      "🛡️ DEFEND! The next attack does ZERO damage!";
+
+  setTimeout(bossAttack,500);
+
+}
+
+function bossAttack(){
+
+  if(!bossActive)return;
+
+  if(defending){
+
+    defending=false;
+
+    document
+      .getElementById("bossMessage")
+      .textContent=
+        "🛡️ BLOCKED! ZERO DAMAGE!";
+
+    return;
+
+  }
+
+  let damage=
+    Math.floor(
+      Math.random()*5
+    )+8;
+
+  if(selectedSkin==="Ice"){
+    damage=Math.floor(damage*.5);
+  }
+
+  if(selectedSkin==="Ghost" &&
+     Math.random()<.45){
+
+    document
+      .getElementById("bossMessage")
+      .textContent=
+        "👻 GHOST DODGED THE ATTACK!";
+
+    return;
+
+  }
+
+  playerHP-=damage;
+
+  document
+    .getElementById("bossMessage")
+    .textContent=
+      "👹 Boss dealt "+damage+" damage!";
+
+  updateBoss();
+
+  if(playerHP<=0){
+
+    playerHP=0;
+    bossActive=false;
+
+    document
+      .getElementById("bossMessage")
+      .textContent=
+        "💀 You lost! Try again by triggering the boss secret.";
+
+    updateBoss();
+
+  }
+
+}
+
+/* =========================
+   ROULETTE
+========================= */
+
+function spinRoulette(){
+
+  const chickens=[
+    "🐔 Classic",
+    "🥇 Gold",
+    "🔥 Fire",
+    "❄️ Ice",
+    "🤖 Robot",
+    "👽 Alien",
+    "👻 Ghost",
+    "👑 GODLY CHICKEN BUTT"
+  ];
+
+  const result=
+    chickens[
+      Math.floor(Math.random()*chickens.length)
+    ];
+
+  document
+    .getElementById("rouletteResult")
+    .textContent=
+      "🎉 You got "+result+"!";
+
+  sound("win");
+
+}
+
+/* =========================
+   RPS
+========================= */
+
+let rpsPoints=0;
+
+function playRPS(player){
+
+  const choices=[
+    "rock",
+    "paper",
+    "scissors"
+  ];
+
+  const bot=
+    choices[
+      Math.floor(Math.random()*3)
+    ];
+
+  let result="";
+
+  if(player===bot){
+
+    result="🤝 DRAW!";
+
+  }else if(
+
+    (player==="rock"&&bot==="scissors") ||
+    (player==="paper"&&bot==="rock") ||
+    (player==="scissors"&&bot==="paper")
+
+  ){
+
+    result="🏆 YOU WIN!";
+
+    rpsPoints++;
+    points+=10;
+
+  }else{
+
+    result="😈 COMPUTER WINS!";
+
+  }
+
+  document
+    .getElementById("rpsResult")
+    .textContent=
+      "You: "+player+
+      " | Bot: "+bot+
+      " → "+result;
+
+  document
+    .getElementById("pointsRPS")
+    .textContent=rpsPoints;
+
+  save();
+
+}
+
+/* =========================
+   SKINS
+========================= */
+
+function selectSkin(skin){
+
+  selectedSkin=skin;
+
+  document
+    .getElementById("selectedSkin")
+    .textContent=
+      "Selected: "+skin;
+
+  save();
+
+}
+
+/* =========================
+   RACE
+========================= */
+
+let racePosition=0;
+let raceRunning=false;
+let raceBoost=3;
+
+function startRace(){
+
+  if(raceRunning)return;
+
+  raceRunning=true;
+  racePosition=0;
+  raceBoost=3;
+
+  document
+    .getElementById("raceMessage")
+    .textContent=
+      "🏁 GO! GO! GO!";
+
+  const interval=
+    setInterval(()=>{
+
+      if(!raceRunning){
+
+        clearInterval(interval);
+        return;
+
+      }
+
+      let speed=5;
+
+      if(selectedSkin==="Gold")speed=7;
+      if(selectedSkin==="Fire")speed=9;
+      if(selectedSkin==="Ice")speed=8;
+      if(selectedSkin==="Robot")speed=10;
+      if(selectedSkin==="Alien")speed=11;
+      if(selectedSkin==="Ghost")speed=12;
+      if(selectedSkin==="Godly")speed=15;
+
+      racePosition+=speed;
+
+      document
+        .getElementById("raceSpeed")
+        .textContent=speed;
+
+      document
+        .getElementById("racePosition")
+        .textContent=racePosition;
+
+      document
+        .getElementById("raceBoost")
+        .textContent=raceBoost;
+
+      if(racePosition>=100){
+
+        raceRunning=false;
+
+        secrets.win=true;
+
+        points+=100;
+
+        sound("win");
+
+        document
+          .getElementById("raceMessage")
+          .textContent=
+            "🏆 YOU WON THE RACE! +100 POINTS!";
+
+        checkSecrets();
+        save();
+
+        clearInterval(interval);
+
+      }
+
+    },500);
+
+}
+
+/* =========================
+   BACKGROUNDS
+========================= */
+
+function theme(name){
+
+  const backgrounds={
+
+    day:
+      "linear-gradient(135deg,#38bdf8,#fef08a)",
+
+    night:
+      "linear-gradient(135deg,#020617,#172554)",
+
+    sunset:
+      "linear-gradient(135deg,#f97316,#7c2d12)",
+
+    space:
+      "linear-gradient(135deg,#020617,#581c87)",
+
+    glitch:
+      "linear-gradient(135deg,#22c55e,#7e22ce,#06b6d4)",
+
+    rainbow:
+      "linear-gradient(135deg,#ef4444,#f59e0b,#22c55e,#3b82f6,#a855f7)"
+
+  };
+
+  document.body.style.background=
+    backgrounds[name] ||
+    backgrounds.night;
+
+}
+
+/* =========================
+   ENTER KEY
+========================= */
+
+document
+  .getElementById("chatInput")
+  .addEventListener("keydown",e=>{
+
+    if(e.key==="Enter"){
+      sendMessage();
+    }
+
+  });
+
+/* START */
+
+checkSecrets();
+
+document
+  .getElementById("selectedSkin")
+  .textContent=
+    "Selected: "+selectedSkin;
+
+</script>
+
+</body>
+</html>
